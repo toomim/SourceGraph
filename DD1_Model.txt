@@ -1,0 +1,134 @@
+Design Doc: SourceGraph Model
+
+Source (node) {
+    src_id: Unique article id (uuid)
+    v_id: Unique edit version of the article (uuid)
+    ref_ids: Array of ref_id ([uuid])
+    content: final text (string)
+
+    src_metadata: {
+        version: Version of the metadata. For each type of metadata there is a different resolution process. (*** Need to think about this ***)
+        title: Name of the article (string)
+        created_at: When v_id was created (time)
+        deleted_at: When v_id was deleted (initially null)
+        author: Creator of the article (string)
+        url: Where article came from
+        medium: What kind of text is it (enum: text message, article, book, email)
+        published: (bool)
+        tags: [string]
+    }
+}
+
+Reference (edge) {
+    ref_id: Unique reference id (uuid)
+
+    src_id: Unique id of parent article (i.e. where it was from) (uuid)
+    src_v_id: Unique id of parent version (uuid)
+    src_start_index: Starting point in parent article
+
+    dest_id: Unique id of child article (i.e. where it will be used) (uuid)
+    dest_v_id: Unique id of child version (uuid)
+    dest_start_index: Starting point in child article
+
+    created_at: When v_id was created (time)
+
+    text: Referenced text (string) *** Should this be included? If it referenced some kind of reference payload then over time more payload types could be added ***
+    entire_src: Indicate whether the full source should be used (bool)
+}
+
+Use Cases:
+1. Email/Text Response: I want to respond to E1. To respond to E1 there is a button to respond. What I am actually doing is
+    (1) Opening a new tab into a new article (new src_id, v_id, generated immediately),
+    (2) Creating a new reference (src_id is the current article, dest_id is the newly generated article, entire_src is set to true)
+    (3) (opt) As I write the unpublished E2 the text and references are continually updated (*** Certainly every time a reference is added ***)
+    (4) The new ref_id is added to the parent's (E1) ref_ids.
+    E1 and E2 will be distinguishable by the author.
+    i.e.
+    (1) src_id != dest_id
+    (2) author1 != author2
+
+2. Edits: I want to edit an old article. Basically this is the same process as responses EXCEPT
+
+    Reference:
+    (1) In the reference src_id == dest_id
+    (2) src_v_id != dest_v_id
+
+    New Source:
+    (1) src_id1 == src_id2
+    (2) v_id1 != v_id2
+    (3) author1 == author2
+
+3. Internal References: A2 wants to reference a segment of A1
+
+    (1) The reference is created as:
+        Ref1 {
+            ref_id: Unique uuid for the reference
+
+            src_id: A1
+            src_v_id: A1
+            src_start_index: Starting point of segment in A1
+
+            dest_id: A2
+            dest_v_id: A2
+            dest_start_index: Insertion point in A2
+
+            created_at: now
+            type: enum of what the reference points to
+            content: Text of segment from A1
+
+        }
+
+    (2) The ref_id is added to both the parent and the child
+
+4. Indicate Child References (who is using particular passages): There's a child checkbox that when clicked indicates (highlights, boxes, etc) a segment that has been
+    referenced. This will only apply to references where the current article src_id != reference src_id.
+
+5. Edit References: Lets say I press "Edit" on one of the articles, when this happens I essentially generate a new article with everything initially the same EXCEPT
+    the version id. All the ref_ids and src_v_ids should be updated for the new article. This will be a pretty expensive operation.
+
+    1. Adding reference: Initially add to redux. When published (or on next full update) add the redux version to the db
+
+    2. Deleting references: Delete the redux version.
+
+    3. Should references be updated? : Update the redux versions. On a publish event then create all new references. Periodical "full saves" may make sense, just in case it crashes.
+
+    4. Updating reference start indices:
+        When the article is next full updated (when published?) all the references start_indices should be updated at once. If they were continually updated this would be too expensive.
+        All changes will edit a redux version of the references. At the very end all those values will be updated. These redux values are also used for rendering purposes.
+         Implementation Ideas:
+            1. One option is that there is an index denoting "Updated until this index". Whenever additions are made everything after it will be changed. Everything before it will remain consistent.
+                It makes sense updating all redux references before the current insertion index. When the insertion "passes" the start_index of a reference, the reference is updated.
+                On a publish event then all the references AFTER the index will be updated. And then published. While the redux versions are updated perhaps there is a way to start the backend requests.
+
+6. Source Deletion: There are no deleted sources, add a deleted_at field.
+
+7. Reference Deletion: There are no deleted references. (*** This is a good reason only to create/update on full publishes ***). Basically all past documents are immutable. All edits are new versions
+    which means the references are either recreated or deleted and not.
+
+UI Features:
+    1. Source Tabs: When a reference is clicked the default is to open a parallel track for the reference. By having multi-tabs what is really happen is that
+        there is 1 real url (the focus pane) and X pseudo-urls (you know that the unfocused tabs are not being edited, thus they can remain statically).
+        Features:
+            1. adjust width
+            2. choose left or right tab
+            3. "focus tab" is automatically scrolled to middle (i.e. click on pane => recenters)
+        Negative-Space Features:
+            1. No vertical pane-splitting
+    2. Parent Boxes: Box the references that refer to a parent source
+        Features:
+            1. Clicking source =>
+    3. Optional Child References: Indicate what segments are referenced and enable links to those references
+    4. Linking to specific index on a page
+        Implementation Ideas:
+            1. The only things that will be linked to are references. Therefore around each reference box can have a href="#index_start" based on the redux object.
+    5. Pagination
+    6. Github multiple order parameter table for v1/sources
+
+
+
+
+
+
+
+
+
