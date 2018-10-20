@@ -1,0 +1,74 @@
+Design Doc: Ultra MVP Requirements
+
+Requirements:
+1. Import document
+    - copy and paste into writing pane
+2. Read document
+    - Display a file
+3. Search documents
+    - Either import a library or make your own (that could be fun)
+4. Select text
+    - Highlighting
+5. Multiple tabs
+
+What to use?
+- Web application ***
+    - set up server at home
+    - save everything there
+    - have client that works while offline and uploads changes when it comes back online
+    - Probably the simplest way to get something off the ground
+    - Setting a server up would be a good exercise
+
+- Server:
+    - API
+        - PUSH
+            - every push involves adding diffs
+        - PULL
+            - every pull involves getting diffs
+    - All diffs are immutable
+
+
+Server:
+- Postgres DB
+    - Set up data models
+- Golang
+    - Set up the API
+- Look over ScaleFT client - just JS api
+
+Client:
+- Will need an efficient diff algorithm or a way of saving new changes on the client-side until pushing them to the server
+
+TODO
+1. Set up simple client (JS) and server (GO)
+2. Set up simple Postgres DB that can be thrown out
+    1. Diff model with versioned metadata object, extendable etc.
+3. Create simple frontend for testing:
+    1. Reading
+    2. Writing
+    3. Tabs
+4.
+
+Plan 2:
+1. Frontend (basic done)
+2. PDF => Text conversion (may not be necessary for the first batch)
+3. Primitive import: Write page
+    1. Metadata:
+        1. title
+        2. creators
+        3. timestamp of publishing
+        4. opt:
+            1. tags
+
+
+TODO:
+1. make component for write
+2. make "backend" for saving what is written (super basic, without metadata) 
+
+
+
+
+3. Text directory that acts as a db
+4. Reading mode
+5. Writing mode
+6. Highlight
+7.
