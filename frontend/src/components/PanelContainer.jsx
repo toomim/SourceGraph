@@ -1,34 +1,37 @@
 import React from 'react';
-import { Container, Row, Col, } from 'reactstrap';
+import { Panel } from './Panel';
+import { PanelDivider } from './PanelDivider';
 
 export class PanelContainer extends React.Component {
+
+    /*
+    Goal: Create a Panels with adjustable width.
+    How:
+        <div>
+            <Panel/>
+            <PanelDivider/>
+            <Panel/>
+        </div>
+
+    Panel Num: X
+    Divider Width: Y
+    Initial Panel width: (window.innerWidth - X * Y) / X
+
+    The PanelContainer handles the width of each child Panel. When a new Panel is added to the PanelContainer each Panel is reinitialized to equal width. The PanelDivider is responsible for updating the width of its neighboring Panels.
+
+
+     */
 
     render () {
         const rowStyle = {
             outline: '5px dotted blue',
             height: window.innerHeight,
             width: window.innerWidth,
-            padding: '10px',
         };
-        const colStyle = {
-            outline: '5px dotted black',
-            height: '100px',
-            //width: '300px',
-            //margin: '20px',
-        };
-        //const xs = "auto";
-        /*
-<Col xs={xs} style={colStyle}>.Col</Col>
-                <Col xs={xs} style={colStyle}>.Col</Col>
-                <Col xs={xs} style={colStyle}>.Col</Col>
-        */
-
-        return <Container>
-            <Row style={rowStyle}>
-                <Col style={colStyle}>.Col</Col>
-                <Col style={colStyle}>.Col</Col>
-                <Col style={colStyle}>.Col</Col>
-            </Row>
-        </Container>;
+        return <div style={rowStyle}>
+            <Panel/>
+            <Panel/>
+            <Panel/>
+        </div>
     }
 }
