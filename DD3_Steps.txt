@@ -1,0 +1,14 @@
+Design Doc 3: Steps
+
+A common mistake I make is not starting simply enough. Let's attempt to start as simple as possible.
+
+1. Writing Panel
+    - writing space
+    - metadata
+2. Text Saving
+3. Reading Panel (display saved text)
+4. N-Panels
+5. Adjustable Panels
+6. Tabs
+7. Reading highlights
+8. Diff
