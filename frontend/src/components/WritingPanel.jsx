@@ -38,7 +38,7 @@ export class WritingPanel extends React.Component {
 
     return <div style={colStyle}>
       <textarea ref='source' style={inputStyle} type="text" name="name" defaultValue={this.state.source}/>
-      <button style={buttonStyle} onClick={this.update.bind(this)}> Publish </button>
+      <button style={buttonStyle} onClick={this.updateSource.bind(this)}> Publish </button>
     </div>;
   };
 }
