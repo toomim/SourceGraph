@@ -1,0 +1,22 @@
+Design Doc 3: Steps
+
+A common mistake I make is not starting simply enough. Let's attempt to start as simple as possible.
+
+1. Writing Panel
+    - writing space (done)
+    - metadata
+2. Text Saving
+    - Just use JS FS api... get the file system going tonight...
+    - make a simple API and then deadend at local filesystem
+    - Rust server API
+    - JS filesystem API https://www.html5rocks.com/en/tutorials/file/filesystem/
+3. Reading Panel (display saved text)
+4. N-Panels
+5. Adjustable Panels
+6. Side Tabs
+7. Reading highlights
+    - Highlight and
+8. Diff
+
+
+Note: At a process level, ideate then pear down
