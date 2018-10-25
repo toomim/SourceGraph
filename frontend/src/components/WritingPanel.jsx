@@ -102,7 +102,7 @@ export class WritingPanel extends React.Component {
     };
 
     //onClick={this.updateSource.bind(this)}
-    //TODO: Consider autogenerating metadata fields 
+    //TODO: Consider autogenerating metadata fields...
     return <div style={colStyle}>
       <div style={headerStyle}>
         <label>
