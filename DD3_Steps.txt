@@ -15,7 +15,7 @@ A common mistake I make is not starting simply enough. Let's attempt to start as
 5. Adjustable Panels
 6. Side Tabs
 7. Reading highlights
-    - Highlight and 
+    - Highlight and
 8. Diff
 
 

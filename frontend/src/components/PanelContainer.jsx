@@ -27,36 +27,6 @@ export class PanelContainer extends React.Component {
 
     How to adjust the number of panels? How to keep track of the data being passed in?
      */
-    constructor(props) {
-      super(props);
-      this.state = {};
-      this.state.tabCount = 1;
-      this.state.dividerCount = 0;
-    }
-
-    recalculateDivider() {
-
-    }
-
-    pollWidth(name, e) {
-
-    }
-
-    addTab() {
-
-    }
-
-    removeTab() {
-
-    }
-
-    addDivider() {
-
-    }
-
-    removeDivider() {
-
-    }
 
     render () {
         const rowStyle = {
