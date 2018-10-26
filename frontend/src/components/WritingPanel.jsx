@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 export class WritingPanel extends React.Component {
   /*
   Goal: The Writing Panel should be responsible for making new sources. There will be three main components of the Panel: (1) TextArea (2) Publish button and (3) Metadata Header
@@ -23,6 +24,7 @@ export class WritingPanel extends React.Component {
     this.state.source = '';
     this.state.metadata = {};
     this.state.timer = null;
+    this.state.ws = new WebSocket('ws://localhost:60607');
   }
 
   updateSource() {
@@ -49,7 +51,7 @@ export class WritingPanel extends React.Component {
 
   componentDidMount() {
     const state = this.state;
-    state.timer = setInterval(() => this.updateSource(), this.state.clock);
+    //state.timer = setInterval(() => this.updateSource(), this.state.clock);
     this.setState(state);
   }
 
@@ -91,7 +93,7 @@ export class WritingPanel extends React.Component {
 
     const inputStyle = {
       outline: '5px dotted black',
-      height: '90%',
+      height: '70%',
       width: '100%',
     };
 
