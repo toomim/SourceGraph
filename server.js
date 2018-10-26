@@ -1,5 +1,5 @@
 var express = require('express')
-var ws = require('./public/ws')
+var ws = require('./ws')
 
 var app = express()
 

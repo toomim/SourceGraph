@@ -24,6 +24,7 @@ export class WritingPanel extends React.Component {
     this.state.source = '';
     this.state.metadata = {};
     this.state.timer = null;
+    this.state.connected = false;
     this.state.ws = new WebSocket('ws://localhost:60607');
   }
 
@@ -51,7 +52,19 @@ export class WritingPanel extends React.Component {
 
   componentDidMount() {
     const state = this.state;
-    //state.timer = setInterval(() => this.updateSource(), this.state.clock);
+    state.timer = setInterval(() => this.updateSource(), this.state.clock);
+
+    this.state.ws.onopen = () => {
+      console.log("Opened! ")
+      const state = this.state
+      state.connected = true;
+      this.setState(state)
+    }
+
+
+    //this.state.ws.send(this.state.source)
+
+
     this.setState(state);
   }
 
@@ -79,6 +92,10 @@ export class WritingPanel extends React.Component {
   }
 
   render () {
+    if (this.state.connected) {
+      this.state.ws.send(this.state.source)
+    }
+    //this.state.ws.send(this.state.source)
     console.log("Check state", this)
     const margin = 5;
     const headerStyle = {};
