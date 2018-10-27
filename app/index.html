@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset='utf-8'>
+      <title>source-graph</title>
+      <style type="text/css">
+      </style>
+  </head>
+  <body>
+  <div id="container">
+      Source Graph
+  </div>
+  <script type="text/javascript" src="client.js"></script>
+  <script>
+    //////////////////////////////////////////////////////////////
+    // Client Web Socket
+
+    var ws = new WebSocket('ws://localhost:40510');
+
+    ws.onopen = function () {
+      console.log('websocket is connected ...');
+      ws.send('connected')
+    };
+
+    ws.onmessage = function (ev) {
+      console.log("Client message")
+      const payload = {
+        v: 1,
+        source: "lalala"
+      };
+
+      ws.send(JSON.stringify(payload))
+    };
+  </script>
+  <script>
+    //////////////////////////////////////////////////////////////
+    // Element Style
+
+    const containerStyle = 'width:100%; height:100%; position:absolute; background-color:lightblue; margin:-8px;';
+    const panelcontainerStyle;
+    const panelStyle;
+    const tabcontainerStyle;
+    const tabStyle;
+  </script>
+  <script>
+    //////////////////////////////////////////////////////////////
+    // Element Helper Functions
+
+    function appendPanelContainer() {
+
+    }
+
+    function appendPanel() {
+
+    }
+
+    f
+
+
+
+  </script>
+  <script>
+    //////////////////////////////////////////////////////////////
+    // Display Logic
+
+    const containerId = "container";
+    const container = document.getElementById(containerId);
+    container.setAttribute("style", containerStyle)
+  </script>
+  </body>
+</html>
+
+<!--
+  TODO:
+  1. Data Model: The UI should mirror the data model.
+
+  Q: How will edits and references work?
+
+  Source: {
+    v: _version number_,
+    metadata: {
+      title
+      authors
+      creation_time
+      publish_time
+      tags
+    },
+    data: _text, image, video, audio_,
+  }
+
+  2. UI Box Container
+
+  WritingPanel:
+    <PanelContainer>
+      <PanelHeader>
+        <PanelBar/>
+        <WriteMetadata/>
+      </PanelHeader/>
+      <WriteArea/>
+      <Publish/>
+      <Remove/>
+    </PanelContainer>
+
+  ReadingPanel:
+    <PanelContainer>
+      <PanelHeader>
+      <PanelBar/>
+        <WriteMetadata/>
+      </PanelHeader/>
+      <ReadArea/>
+      <Publish/>
+      <Remove/>
+    </PanelContainer>
+
+  TabContainer:
+  <TabContainer>
+    <SortSomething (not sure yet)>
+    <Tab>
+      <Title>
+      <Tags>
+    </Tab>
+  </TabContainer>
+
+ Layout plan:
+   <Container>
+     <TabContainer>
+      <Tab>
+     </TabContainer>
+     </PanelContainer/>
+   </Container>
+
+  3. Web Socket Model
+    Plan 1: A web socket should correspond to each resource. Therefore a read and write panel should have a corresponding websocket. The read web socket will be used for creating a new source and for displaying related sources. The write web socket will be used for publishing resources and connecting resources.
+
+    Plan 2: There is a single socket and all panels interact with it the same way, but with different resources. (this is probably better and simpler)
+
+
+    ReadPanel Socket:
+
+
+    WritePanel Socket:
+
+
+ -->
