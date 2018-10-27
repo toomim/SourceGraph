@@ -1,3 +1,7 @@
+//////////////////////////////////////////////////////////////
+// server api - data read/write will occur here
+
+
 var WebSocketServer = require('ws').Server,
   wss = new WebSocketServer({port: 40510});
 
@@ -14,6 +18,6 @@ wss.on('connection', function (ws) {
 
   setInterval(
     () => ws.send(`${new Date()}`),
-    500
+    1000
   )
 });
