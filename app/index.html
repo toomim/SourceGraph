@@ -7,10 +7,7 @@
       </style>
   </head>
   <body>
-  <div id="container">
-      Source Graph
-  </div>
-  <script type="text/javascript" src="client.js"></script>
+  <div id="root"></div>
   <script>
     //////////////////////////////////////////////////////////////
     // Client Web Socket
@@ -33,39 +30,88 @@
     };
   </script>
   <script>
+
+    //////////////////////////////////////////////////////////////
+    // Essential Variables
+
+    // Q: How to create local state that mirrors the parent-child relationships?
+    // const treeState = {};
+
+    // Element IDs
+    const containerId = 'root';
+    const tabcontainerId = 'tabs';
+    const tab1Id = 'tab1';
+    const panelcontainerId = 'panelcontainer';
+    const panel1Id = 'panel1';
+
     //////////////////////////////////////////////////////////////
     // Element Style
 
-    const containerStyle = 'width:100%; height:100%; position:absolute; background-color:lightblue; margin:-8px;';
-    const panelcontainerStyle;
-    const panelStyle;
-    const tabcontainerStyle;
-    const tabStyle;
-  </script>
-  <script>
+    const containerStyle = 'width:100%; height:100%; position:absolute; background-color:blue; margin:-8px; overflow:hidden;';
+     const tabcontainerStyle = 'width:200px; height:100%; position:relative; background-color: lightblue; float:left; border-right:solid; border-right-width:1px; border-color:black;';
+    const tabStyle = 'width:100%; height:20px; position:relative; background-color:green; border-bottom:solid; border-bottom-width:1px;';
+    const panelcontainerStyle = 'width: 800px; height:100%; position:relative; background-color:yellow; float:left; border-right:solid; border-right-width:1px; border-color:black; overflow:hidden;';
+    const panelStyle = 'width:350px; height:100%; position:relative; background-color:orange; float:left; border-right:solid; border-right-width:1px;';
+
     //////////////////////////////////////////////////////////////
     // Element Helper Functions
 
-    function appendPanelContainer() {
+    // Q: Can there be a general parent-child-appender?
+    // function appendChildtoParent(parentId, childId, childStyle, childConstructor) {
+    //   return;
+    // }
 
+
+    function appendTabContainer(parentId, childId) {
+      const parent = document.getElementById(parentId);
+      const child = document.createElement('div');
+      child.setAttribute('id', childId);
+      child.setAttribute('style', tabcontainerStyle);
+      parent.appendChild(child);
     }
 
-    function appendPanel() {
-
+    //Q: How to create parent "state" to keep track of number of tabs and their generated ID?
+    //A: Not quite an answer, but refer to treestate
+    function appendTab(parentId, childId) {
+      const parent = document.getElementById(parentId);
+      const child = document.createElement('div');
+      child.setAttribute('id', childId);
+      child.setAttribute('style', tabStyle);
+      parent.appendChild(child);
     }
 
-    f
+    function appendPanelContainer(parentId, childId) {
+      const parent = document.getElementById(parentId);
+      const child = document.createElement('div');
+      child.setAttribute('id', childId);
+      child.setAttribute('style', panelcontainerStyle);
+      parent.appendChild(child);
+    }
 
-
+    function appendPanel(parentId, childId) {
+      const parent = document.getElementById(parentId);
+      const child = document.createElement('div');
+      child.setAttribute('id', childId);
+      child.setAttribute('style', panelStyle);
+      parent.appendChild(child);
+    }
 
   </script>
   <script>
     //////////////////////////////////////////////////////////////
     // Display Logic
 
-    const containerId = "container";
     const container = document.getElementById(containerId);
-    container.setAttribute("style", containerStyle)
+    container.setAttribute("style", containerStyle);
+
+    appendTabContainer(containerId, tabcontainerId);
+    appendTab(tabcontainerId, tab1Id);
+    appendTab(tabcontainerId, tab1Id);
+    appendTab(tabcontainerId, tab1Id);
+    appendPanelContainer(containerId, panelcontainerId);
+    appendPanel(panelcontainerId, panel1Id);
+    appendPanel(panelcontainerId, panel1Id);
+
   </script>
   </body>
 </html>
@@ -98,7 +144,7 @@
       </PanelHeader/>
       <WriteArea/>
       <Publish/>
-      <Remove/>
+      <Close/>
     </PanelContainer>
 
   ReadingPanel:
@@ -109,7 +155,8 @@
       </PanelHeader/>
       <ReadArea/>
       <Publish/>
-      <Remove/>
+      <Close/>
+      <Timeline/>
     </PanelContainer>
 
   TabContainer:
