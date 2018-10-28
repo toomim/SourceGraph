@@ -1,24 +1,50 @@
 //////////////////////////////////////////////////////////////
 // server
 
-var express = require('express');
+const express = require('express');
+const http = require('http');
+const _ = require('lodash');
+const fs = require('fs');
 
-var app = express();
+const app = express();
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-/*
-app.use('/test', express.static('client.js'));
+const server = http.createServer(app);
 
-app.get('./client.js', function (req, res) {
-  console.log("Express");
-  //console.log(req)
-  //console.log(res)
-  res.send("./client.js");
-});*/
-
-app.listen(3000, function () {
+server.listen(3000, function () {
   console.log('App listening on port 3000!')
+});
+
+//////////////////////////////////////////////////////////////
+// server api - data read/write will occur here
+
+const WebSocketServer = require('ws').Server;
+const wss = new WebSocketServer({ server:server });
+
+wss.on('connection', function (ws) {
+  ws.onmessage = (message) => {
+    const data = message.data;
+    console.log(data)
+    if (data === 'connected') {
+      return
+    }
+
+    const json = JSON.parse(data);
+    const keys = Object.keys(json);
+    if (_.has(json,'version',false) && _.has(json,'type',false)) {
+      fs.writeFile('./saved/test.txt', data, () => {
+        console.log("CALLED!")
+    })
+    } else {
+      console.log("Data missing version and type")
+    }
+  }
+
+  /*setInterval(
+    () => ws.send(`${new Date()}`),
+    1000
+  )*/
 });
