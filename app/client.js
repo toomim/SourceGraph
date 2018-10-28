@@ -9,11 +9,7 @@ ws.onopen = function () {
 };
 
 ws.onmessage = function (ev) {
-  console.log("Client message", ev);
-  const payload = {
-    v: 1,
-    source: "lalala"
-  };
+  console.log('Client message', ev);
 };
 
 //////////////////////////////////////////////////////////////
@@ -59,7 +55,7 @@ function makeBranch(element, id, style, children) {
     id: id,
     style: style,
     children: children
-  }
+  };
 }
 
 function makeButton(element, id, style, fxn, txt) {
@@ -70,7 +66,7 @@ function makeButton(element, id, style, fxn, txt) {
     style,
     fxn,
     txt,
-  }
+  };
 }
 
 
@@ -89,7 +85,7 @@ function publishText(textareaId) {
     version: '0.0.1',
     type: 'write',
     payload: {
-      identifier: "textsave",
+      identifier: 'textsave',
       data: textarea.value.trim(),
       extension: 'txt'
     }
@@ -98,8 +94,11 @@ function publishText(textareaId) {
 }
 
 const publishButtonFxn = (ev) => {
+  if (ev) {
+    ev.preventDefault();
+  }
   publishText(textareaId);
-}
+};
 
 const stateTree = makeBranch('div', containerId, containerStyle,
   [
