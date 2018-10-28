@@ -2,3 +2,7 @@ Questions
 
 1. How to manage client state? Tree-state?
 2. How to deal with updates?
+3. How to send with ws? Does send have to rely on onmessage first?
+4. How to include static js with express?
+5. How to interact with express?
+6. What is the easiest way to save to the filesystem?
