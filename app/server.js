@@ -15,7 +15,7 @@ app.get('/', function (req, res) {
 const server = http.createServer(app);
 
 server.listen(3000, function () {
-  console.log('App listening on port 3000!')
+  console.log('App listening on port 3000');
 });
 
 //////////////////////////////////////////////////////////////
@@ -27,21 +27,19 @@ const wss = new WebSocketServer({ server:server });
 wss.on('connection', function (ws) {
   ws.onmessage = (message) => {
     const data = message.data;
-    console.log(data)
     if (data === 'connected') {
-      return
+      return;
     }
 
     const json = JSON.parse(data);
-    const keys = Object.keys(json);
     if (_.has(json,'version',false) && _.has(json,'type',false)) {
       fs.writeFile('./saved/test.txt', data, () => {
-        console.log("CALLED!")
-    })
+        console.log('CALLED!');
+      });
     } else {
-      console.log("Data missing version and type")
+      console.log('Data missing version and type');
     }
-  }
+  };
 
   /*setInterval(
     () => ws.send(`${new Date()}`),

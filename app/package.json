@@ -1,0 +1,20 @@
+{
+  "name": "source-graph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "eslint": "^5.8.0",
+    "express": "^4.16.4",
+    "jslint": "^0.12.0",
+    "lodash": "^4.17.11",
+    "ws": "^6.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
