@@ -16,11 +16,11 @@
 
     ws.onopen = function () {
       console.log('websocket is connected ...');
-      ws.send('connected')
+      ws.send('connected');
     };
 
     ws.onmessage = function (ev) {
-      console.log("Client message")
+      console.log("Client message");
       const payload = {
         v: 1,
         source: "lalala"
@@ -38,7 +38,8 @@
     // const treeState = {};
 
     // Element IDs
-    const containerId = 'root';
+    const rootId = 'root';
+    const containerId = 'container';
     const tabcontainerId = 'tabs';
     const tab1Id = 'tab1';
     const panelcontainerId = 'panelcontainer';
@@ -50,8 +51,8 @@
     const containerStyle = 'width:100%; height:100%; position:absolute; background-color:blue; margin:-8px; overflow:hidden;';
      const tabcontainerStyle = 'width:200px; height:100%; position:relative; background-color: lightblue; float:left; border-right:solid; border-right-width:1px; border-color:black;';
     const tabStyle = 'width:100%; height:20px; position:relative; background-color:green; border-bottom:solid; border-bottom-width:1px;';
-    const panelcontainerStyle = 'width: 800px; height:100%; position:relative; background-color:yellow; float:left; border-right:solid; border-right-width:1px; border-color:black; overflow:hidden;';
-    const panelStyle = 'width:350px; height:100%; position:relative; background-color:orange; float:left; border-right:solid; border-right-width:1px;';
+    const panelcontainerStyle = 'width: 400px; height:100%; position:relative; background-color:yellow; float:left; border-right:solid; border-right-width:1px; border-color:black; overflow:hidden;';
+    const panelStyle = 'width:390px; height:100%; position:relative; background-color:orange; float:left; border-right:solid; border-right-width:1px;';
 
     //////////////////////////////////////////////////////////////
     // Element Helper Functions
@@ -61,56 +62,63 @@
     //   return;
     // }
 
-
-    function appendTabContainer(parentId, childId) {
-      const parent = document.getElementById(parentId);
-      const child = document.createElement('div');
-      child.setAttribute('id', childId);
-      child.setAttribute('style', tabcontainerStyle);
-      parent.appendChild(child);
+    function makeBranch(element, id, style, children) {
+      return {
+        element: element,
+        id: id,
+        style: style,
+        children: children
+      }
     }
 
-    //Q: How to create parent "state" to keep track of number of tabs and their generated ID?
-    //A: Not quite an answer, but refer to treestate
-    function appendTab(parentId, childId) {
-      const parent = document.getElementById(parentId);
-      const child = document.createElement('div');
+    const stateTree = makeBranch('div', containerId, containerStyle,
+      [
+        makeBranch('div', tabcontainerId, tabcontainerStyle,
+          [
+            makeBranch('div', tab1Id, tabStyle, []),
+            makeBranch('div', tab1Id, tabStyle, []),
+            makeBranch('div', tab1Id, tabStyle, [])
+          ]
+        ),
+        makeBranch('div', panelcontainerId, panelcontainerStyle,
+          [
+            makeBranch('div', panel1Id, panelStyle, [])
+          ]
+        )
+      ]
+    );
+
+    function renderTree(tree, rootId) {
+      const parent = document.getElementById(rootId);
+      const child = document.createElement(tree.element);
+      const childId = tree.id;
       child.setAttribute('id', childId);
-      child.setAttribute('style', tabStyle);
+      child.setAttribute('style', tree.style);
       parent.appendChild(child);
+      const children = tree.children;
+      for (let x = 0; x < tree.children.length; x++) {
+        const grandchildren = children[x];
+        renderTree(grandchildren, childId);
+      }
+      return;
     }
 
-    function appendPanelContainer(parentId, childId) {
-      const parent = document.getElementById(parentId);
-      const child = document.createElement('div');
-      child.setAttribute('id', childId);
-      child.setAttribute('style', panelcontainerStyle);
-      parent.appendChild(child);
-    }
-
-    function appendPanel(parentId, childId) {
-      const parent = document.getElementById(parentId);
-      const child = document.createElement('div');
-      child.setAttribute('id', childId);
-      child.setAttribute('style', panelStyle);
-      parent.appendChild(child);
-    }
+    /*
+    Writing Panel Elements:
+    1. Elements:
+      1. Metadata-Header (construct from a metadata-array)
+      2. WriteArea
+      3. Publish
+    2. Functionality
+      Following a publish OnClick event all the metadata and textarea values will be gather, organized, and sent over ws to api.js where they will be stored
+     */
 
   </script>
   <script>
     //////////////////////////////////////////////////////////////
     // Display Logic
 
-    const container = document.getElementById(containerId);
-    container.setAttribute("style", containerStyle);
-
-    appendTabContainer(containerId, tabcontainerId);
-    appendTab(tabcontainerId, tab1Id);
-    appendTab(tabcontainerId, tab1Id);
-    appendTab(tabcontainerId, tab1Id);
-    appendPanelContainer(containerId, panelcontainerId);
-    appendPanel(panelcontainerId, panel1Id);
-    appendPanel(panelcontainerId, panel1Id);
+    renderTree(stateTree, rootId);
 
   </script>
   </body>
@@ -162,6 +170,7 @@
   TabContainer:
   <TabContainer>
     <SortSomething (not sure yet)>
+    <Close/Open/>
     <Tab>
       <Title>
       <Tags>

@@ -1,0 +1,4 @@
+Questions
+
+1. How to manage client state? Tree-state?
+2. How to deal with updates?
