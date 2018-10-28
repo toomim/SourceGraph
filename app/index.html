@@ -16,11 +16,11 @@
 
     ws.onopen = function () {
       console.log('websocket is connected ...');
-      ws.send('connected')
+      ws.send('connected');
     };
 
     ws.onmessage = function (ev) {
-      console.log("Client message")
+      console.log("Client message");
       const payload = {
         v: 1,
         source: "lalala"
@@ -77,7 +77,7 @@
           [
             makeBranch('div', tab1Id, tabStyle, []),
             makeBranch('div', tab1Id, tabStyle, []),
-            makeBranch('div', tab1Id, tabStyle, []),
+            makeBranch('div', tab1Id, tabStyle, [])
           ]
         ),
         makeBranch('div', panelcontainerId, panelcontainerStyle,
@@ -103,13 +103,6 @@
       return;
     }
 
-    /*console.log("Test state tree",
-      stateTree
-    )*/
-
-
-
-
     /*
     Writing Panel Elements:
     1. Elements:
@@ -118,7 +111,6 @@
       3. Publish
     2. Functionality
       Following a publish OnClick event all the metadata and textarea values will be gather, organized, and sent over ws to api.js where they will be stored
-
      */
 
   </script>
