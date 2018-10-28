@@ -12,6 +12,10 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/client.js', function (req, res) {
+  res.sendFile(__dirname + '/client.js');
+});
+
 const server = http.createServer(app);
 
 server.listen(3000, function () {
@@ -34,7 +38,7 @@ wss.on('connection', function (ws) {
     const json = JSON.parse(data);
     if (_.has(json,'version',false) && _.has(json,'type',false)) {
       fs.writeFile('./saved/test.txt', data, () => {
-        console.log('CALLED!');
+        console.log('\nData: ', data);
       });
     } else {
       console.log('Data missing version and type');
