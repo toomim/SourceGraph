@@ -4,8 +4,9 @@
 #
 # This file implements the SourceGraph app using:
 #   • The statebus coffeescript-style UI, instead of the client.js
-#   • Statebus to store the textarea text on a server
-#     • Uses the default stateb.us server: so full path is state://stateb.us/text
+#   • Statebus to store the state, and send to server on "publish"
+#     • Uses the default stateb.us server: state://stateb.us
+#     • Hardcodes the source location at state://stateb.us/source/27348234
 # 
 # You do not need to run a server.  To use the app, just double-click this file
 # from your finder, to open it with a file:// url.
@@ -14,8 +15,6 @@
 # interoperate with the same state!
 
 dom.BODY = ->
-  text = fetch('/text')
-
   DIV                          # Container
     width: '100%'
     height: '100%'
@@ -77,10 +76,11 @@ dom.BODY = ->
           backgroundColor: 'gray'
           borderBottom: 'solid'
           borderBottomWidth: 1
-          value: text.body
+          value: fetch('ui').editor_text
           onChange: (e) ->
-            text.body = e.target.value
-            save(text)
+            ui = fetch('ui')
+            ui.editor_text = e.target.value
+            save(ui)
 
         DIV                    # Publish button
           width: 75
@@ -90,7 +90,8 @@ dom.BODY = ->
           borderWidth: 1
           backgroundColor: 'white'
           textAlign: 'center'
-          onClick: -> text.published = true; save(text)
+          onClick: ->
+            save({key: '/source/27348234', content: fetch('ui').editor_text})
           'Publish'
 
 </script><script src="https://stateb.us/client6.js"></script>
