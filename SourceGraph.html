@@ -1,5 +1,10 @@
 <script type="statebus">
 
+# This implements the app using:
+#   • The statebus coffeescript-style UI, instead of the client.js
+#   • Statebus to store the textarea's text on a server
+#     • Uses the default stateb.us server: so full path is state://stateb.us/text
+
 dom.BODY = ->
   text = fetch('/text')
 

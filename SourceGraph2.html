@@ -1,0 +1,130 @@
+<script type="statebus">
+
+# This is like SourceGraph.html, but also:
+#   • Stores a set of sources in a database.
+#   • User can select a source to edit.
+#   • User can delete a source.
+
+dom.BODY = ->
+  sources = fetch('/sources')   # Server state starts with a /
+  ui      = fetch('ui')         # Client state is lost when you reload
+
+  # Initialize the state
+  if not ui.selected_source and sources.all[0]
+    ui.selected_source = sources.all[0].key
+    save(ui)
+  curr_source = ui.selected_source and fetch(ui.selected_source)
+
+  # Draw the page
+  DIV                          # Container
+    width: '100%'
+    height: '100%'
+    position: 'absolute'
+    backgroundColor: 'blue'
+    margin: -8
+    overflow:'hidden'
+
+    DIV                        # Tab Container
+      width: 200
+      height: '100%'
+      position: 'relative'
+      backgroundColor: 'lightblue'
+      float: 'left'
+      borderRight: 'solid'
+      borderRightWidth: 1
+      borderColor: 'black'
+
+      for source in sources.all or [] then do (source) ->
+
+        DIV                    # Tab
+          height: 20
+          position: 'relative'
+          backgroundColor: 'lightgreen'
+          fontWeight: if curr_source == source then 'bold'
+          color: if curr_source != source then 'grey'
+          borderBottom: 'solid'
+          borderBottomWidth: 1
+          overflowX: 'hidden'
+          onClick: ->
+            ui.selected_source = source.key
+            save(ui)
+
+          SPAN                 # Delete source
+            position: 'absolute'
+            right: 0
+            borderRadius: 7
+            height: 14
+            width: 14
+            backgroundColor: 'red'
+            color: 'white'
+            cursor: 'pointer'
+            fontFamily: 'helvetica'
+            fontSize: 13
+            onClick: (e) ->
+              e.stopPropagation()
+              del(source)
+              sources.all = sources.all.filter((x)->x!=source)
+              save(sources)
+              delete ui.selected_source
+              save(ui)
+            SPAN left: 4, bottom: 0, position: 'absolute', 'x'
+
+          source.title or source.content.substr(0,30) or '[untitled]'
+
+      BUTTON
+        onClick: ->
+          sources.all = sources.all or []
+          source = {
+            key: '/source/' + Math.random().toString(36).substring(7)
+            content: ''
+          }
+          sources.all.push(source)
+          save(sources)
+
+          ui.selected_source = source.key
+          save(ui)
+        'New source'
+
+    DIV                        # Panel Container
+      width: 400
+      height: '100%'
+      position: 'relative'
+      backgroundColor: 'yellow'
+      float: 'left'
+      borderRight: 'solid'
+      borderRightWidth: 1
+      borderColor: 'black'
+      overflow: 'hidden'
+
+      DIV                      # Panel
+        width: 390
+        height: '100%'
+        position: 'relative'
+        backgroundColor: 'orange'
+        float: 'left'
+        borderRight: 'solid'
+        borderRightWidth: 1
+
+        DIV                    # Metadata Header
+          height: 100
+          position: 'relative'
+          backgroundColor: 'red'
+          borderBottom: 'solid'
+          borderBottomWidth: 1
+          'Metadata Header'
+
+        TEXTAREA
+          width: '100%'
+          height: 500
+          position: 'relative'
+          backgroundColor: 'gray'
+          borderBottom: 'solid'
+          borderBottomWidth: 1
+          disabled: not curr_source
+          value: curr_source and curr_source.content
+          onChange: (e) ->
+            curr_source.content = e.target.value
+            save(curr_source)
+
+
+</script><script src="https://stateb.us/client6.js"></script>
