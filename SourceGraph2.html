@@ -34,43 +34,43 @@ dom.BODY = ->
       borderRightWidth: 1
       borderColor: 'black'
 
-      for source in sources.all or [] then do (source) ->
-
-        DIV                    # Tab
-          height: 20
-          position: 'relative'
-          backgroundColor: 'lightgreen'
-          fontWeight: if curr_source == source then 'bold'
-          color: if curr_source != source then 'grey'
-          borderBottom: 'solid'
-          borderBottomWidth: 1
-          overflowX: 'hidden'
-          cursor: 'pointer'
-          onClick: ->
-            ui.selected_source = source.key
-            save(ui)
-
-          SPAN                 # Delete source
-            position: 'absolute'
-            right: 0
-            borderRadius: 7
-            height: 14
-            width: 14
-            backgroundColor: 'red'
-            color: 'white'
+      for source in sources.all or []
+        do (source) ->
+          DIV                    # Tab
+            height: 20
+            position: 'relative'
+            backgroundColor: 'lightgreen'
+            fontWeight: if curr_source == source then 'bold'
+            color: if curr_source != source then 'grey'
+            borderBottom: 'solid'
+            borderBottomWidth: 1
+            overflowX: 'hidden'
             cursor: 'pointer'
-            fontFamily: 'helvetica'
-            fontSize: 13
-            onClick: (e) ->
-              e.stopPropagation()
-              del(source)
-              sources.all = sources.all.filter((x)->x!=source)
-              save(sources)
-              delete ui.selected_source
+            onClick: ->
+              ui.selected_source = source.key
               save(ui)
-            SPAN left: 4, bottom: 0, position: 'absolute', 'x'
 
-          source.title or source.content.substr(0,30) or '[untitled]'
+            SPAN                 # Delete source
+              position: 'absolute'
+              right: 0
+              borderRadius: 7
+              height: 14
+              width: 14
+              backgroundColor: 'red'
+              color: 'white'
+              cursor: 'pointer'
+              fontFamily: 'helvetica'
+              fontSize: 13
+              onClick: (e) ->
+                e.stopPropagation()
+                del(source)
+                sources.all = sources.all.filter((x)->x!=source)
+                save(sources)
+                delete ui.selected_source
+                save(ui)
+              SPAN left: 4, bottom: 0, position: 'absolute', 'x'
+
+            source.title or source.content.substr(0,30) or '[untitled]'
 
       BUTTON
         onClick: ->
