@@ -36,7 +36,7 @@ dom.BODY = ->
 
       for source in sources.all or []
         do (source) ->
-          DIV                    # Tab
+          DIV                  # Tab
             height: 20
             position: 'relative'
             backgroundColor: 'lightgreen'
@@ -50,7 +50,7 @@ dom.BODY = ->
               ui.selected_source = source.key
               save(ui)
 
-            SPAN                 # Delete source
+            SPAN               # Delete source
               position: 'absolute'
               right: 0
               borderRadius: 7
