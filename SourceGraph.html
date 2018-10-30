@@ -76,11 +76,13 @@ dom.BODY = ->
           backgroundColor: 'gray'
           borderBottom: 'solid'
           borderBottomWidth: 1
-          value: fetch('ui').editor_text
+          value: fetch('ui').editor_text    # Access statebus state with fetch()
           onChange: (e) ->
             ui = fetch('ui')
             ui.editor_text = e.target.value
-            save(ui)
+            save(ui)                        # Change it with save().
+
+        # When state is save()d, everything that fetched it will re-render.
 
         DIV                    # Publish button
           width: 75
@@ -93,5 +95,6 @@ dom.BODY = ->
           onClick: ->
             save({key: '/source/27348234', content: fetch('ui').editor_text})
           'Publish'
+
 
 </script><script src="https://stateb.us/client6.js"></script>
