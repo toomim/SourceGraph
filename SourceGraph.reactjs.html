@@ -1,0 +1,116 @@
+<script src="https://stateb.us/client6.js"></script>
+<script>
+
+// This is the same as SourceGraph.js.html, but uses React's (unnecessarily
+// complex) syntax.  It has these differences:
+// 
+//   • React.createClass({ render: () => { ... } }) instead of dom.BLAH = -> ...
+//   • React.DOM.div()                              instead of DIV()
+//   • style: { margin: 5 }                         instead of margin: 5
+//
+// (Note that this is all using React v0.12.2.  This was before ES6.)
+//
+// We *also* use statebus.create_react_class() instead of React.createClass(),
+// which instruments the component to automatically react to statebus state
+// changes in addition to setState() changes.
+//
+// There's one thing left: you could easily use JSX in here too if you just
+// import the library yourself.  I just hate JSX... so I haven't taken that
+// step here.
+
+var body = statebus.create_react_class({
+  render: () => {
+    return React.DOM.div({                          // Container
+      style: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        backgroundColor: 'blue',
+        margin: -8,
+        overflow:'hidden'}},
+
+      React.DOM.div({                        // Tab Container
+        style: {
+          width: 200,
+          height: '100%',
+          position: 'relative',
+          backgroundColor: 'lightblue',
+          float: 'left',
+          borderRight: 'solid',
+          borderRightWidth: 1,
+          borderColor: 'black'}},
+
+        [1,2,3].map(_=>
+          React.DOM.div({                    // Tab
+            style: {
+              height: 20,
+              position: 'relative',
+              backgroundColor: 'green',
+              borderBottom: 'solid',
+              borderBottomWidth: 1}}))),
+
+      React.DOM.div({                        // Panel Container
+        style: {
+          width: 400,
+          height: '100%',
+          position: 'relative',
+          backgroundColor: 'yellow',
+          float: 'left',
+          borderRight: 'solid',
+          borderRightWidth: 1,
+          borderColor: 'black',
+          overflow: 'hidden'}},
+
+        React.DOM.div({                      // Panel
+          style: {
+            width: 390,
+            height: '100%',
+            position: 'relative',
+            backgroundColor: 'orange',
+            float: 'left',
+            borderRight: 'solid',
+            borderRightWidth: 1}},
+
+          React.DOM.div({                    // Metadata Header
+            style: {
+              height: 100,
+              position: 'relative',
+              backgroundColor: 'red',
+              borderBottom: 'solid',
+              borderBottomWidth: 1}},
+            'Metadata Header'),
+
+          React.DOM.textarea({
+            style: {
+              width: '100%',
+              height: 500,
+              position: 'relative',
+              backgroundColor: 'gray',
+              borderBottom: 'solid',
+              borderBottomWidth: 1},
+            value: fetch('ui').editor_text,
+            onChange: (e) => {
+              ui = fetch('ui')
+              ui.editor_text = e.target.value
+              save(ui)
+            }}),
+
+          React.DOM.div({                    // Publish button
+            style: {
+              width: 75,
+              height: 20,
+              position: 'relative',
+              border: 'solid',
+              borderWidth: 1,
+              backgroundColor: 'white',
+              textAlign: 'center'},
+            onClick: _=> {
+              save({key: '/source/27348234', content: fetch('ui').editor_text})
+            }},
+            'Publish'))))
+  },
+  displayName: 'body'
+})
+
+setTimeout(_=> React.render(body(), document.body))
+</script>

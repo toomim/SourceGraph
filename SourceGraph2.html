@@ -10,7 +10,7 @@ dom.BODY = ->
   ui      = fetch('ui')         # Client state is lost when you reload
 
   # Initialize the state
-  if not ui.selected_source and sources.all[0]
+  if not ui.selected_source and sources.all and sources.all[0]
     ui.selected_source = sources.all[0].key
     save(ui)
   curr_source = ui.selected_source and fetch(ui.selected_source)
@@ -45,6 +45,7 @@ dom.BODY = ->
           borderBottom: 'solid'
           borderBottomWidth: 1
           overflowX: 'hidden'
+          cursor: 'pointer'
           onClick: ->
             ui.selected_source = source.key
             save(ui)
