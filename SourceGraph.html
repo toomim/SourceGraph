@@ -1,0 +1,83 @@
+<script type="statebus">
+
+dom.BODY = ->
+  text = fetch('/text')
+
+  DIV                          # Container
+    width: '100%'
+    height: '100%'
+    position: 'absolute'
+    backgroundColor: 'blue'
+    margin: -8
+    overflow:'hidden'
+
+    DIV                        # Tab Container
+      width: 200
+      height: '100%'
+      position: 'relative'
+      backgroundColor: 'lightblue'
+      float: 'left'
+      borderRight: 'solid'
+      borderRightWidth: 1
+      borderColor: 'black'
+
+      for i in [1..3]
+        DIV                    # Tab
+          height: 20
+          position: 'relative'
+          backgroundColor: 'green'
+          borderBottom: 'solid'
+          borderBottomWidth: 1
+    
+    DIV                        # Panel Container
+      width: 400
+      height: '100%'
+      position: 'relative'
+      backgroundColor: 'yellow'
+      float: 'left'
+      borderRight: 'solid'
+      borderRightWidth: 1
+      borderColor: 'black'
+      overflow: 'hidden'
+
+      DIV                      # Panel
+        width: 390
+        height: '100%'
+        position: 'relative'
+        backgroundColor: 'orange'
+        float: 'left'
+        borderRight: 'solid'
+        borderRightWidth: 1
+
+        DIV                    # Metadata Header
+          height: 100
+          position: 'relative'
+          backgroundColor: 'red'
+          borderBottom: 'solid'
+          borderBottomWidth: 1
+          'Metadata Header'
+
+        TEXTAREA
+          width: '100%'
+          height: 500
+          position: 'relative'
+          backgroundColor: 'gray'
+          borderBottom: 'solid'
+          borderBottomWidth: 1
+          value: text.body
+          onChange: (e) ->
+            text.body = e.target.value
+            save(text)
+
+        DIV                    # Publish button
+          width: 75
+          height: 20
+          position: 'relative'
+          border: 'solid'
+          borderWidth: 1
+          backgroundColor: 'white'
+          textAlign: 'center'
+          onClick: -> text.published = true; save(text)
+          'Publish'
+
+</script><script src="https://stateb.us/client6.js"></script>
